@@ -208,6 +208,12 @@ function displayResults(results, query, pagination, currentPage, resultsCountTex
                             </svg>
                             <span>AI Summary</span>
                         </button>
+                        <button class="chat-about-btn" data-index="${index}" title="Chat about this case">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                            <span>Chat</span>
+                        </button>
                     </div>
                     ${headlineHTML ? `
                     <div class="result-headline">
@@ -235,6 +241,9 @@ function displayResults(results, query, pagination, currentPage, resultsCountTex
 
     // Attach summarize button listeners
     attachSummarizeListeners();
+
+    // Attach chat button listeners
+    attachChatListeners();
 }
 
 function attachSummarizeListeners() {
@@ -258,6 +267,34 @@ function attachSummarizeListeners() {
 
             // Show summary modal
             showSummaryModal(docUrl, docTitle, docId, query);
+        });
+    });
+}
+
+function attachChatListeners() {
+    const chatButtons = document.querySelectorAll('.chat-about-btn');
+    chatButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+
+            const resultCard = button.closest('.result-card');
+            const docId = resultCard.getAttribute('data-doc-id');
+            const docTitle = resultCard.getAttribute('data-doc-title');
+            const query = resultCard.getAttribute('data-query');
+
+            // Prefer doc_id if available (more reliable)
+            if (!docId) {
+                showNotification('Document information not available for chat', 'error');
+                return;
+            }
+
+            // Check if chat API is available
+            if (window.ChatAPI && window.ChatAPI.startChatWithCase) {
+                window.ChatAPI.startChatWithCase(docId, query, docTitle);
+            } else {
+                showNotification('Chat functionality not available', 'error');
+            }
         });
     });
 }

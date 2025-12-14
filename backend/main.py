@@ -14,6 +14,7 @@ from summarizer import summarize_document
 from rate_limiter import SlidingWindowRateLimiter
 from auth_routes import router as auth_router, get_current_user
 from user_db import init_user_collections
+from chat_routes import chat_router
 
 # Simple in-memory cache (fastest - for current session)
 cache = {}
@@ -70,6 +71,9 @@ app.add_middleware(
 
 # Include authentication routes
 app.include_router(auth_router)
+
+# Include chat routes with correct prefix
+app.include_router(chat_router)
 
 
 @app.get("/")

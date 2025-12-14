@@ -36,6 +36,11 @@
                             <button class="text-scale-btn active" data-scale="default" id="textScaleDefault">A</button>
                             <button class="text-scale-btn" data-scale="increase" id="textScaleUp">A+</button>
                         </div>
+                        <button class="icon-btn chat-toggle" id="chatToggle" aria-label="Toggle chat">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </button>
                     </div>
                     <button class="login-btn" id="loginBtn" style="display: block;">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -140,6 +145,115 @@
         <!-- Results Container -->
         <div id="resultsContainer" class="results-container" style="display: none;"></div>
     </main>
+
+    <!-- Chatbot Drawer -->
+    <div class="chatbot-drawer" id="chatbotDrawer">
+        <div class="chatbot-overlay" id="chatbotOverlay"></div>
+        <div class="chatbot-container">
+            <!-- Chat Sidebar -->
+            <div class="chat-sidebar" id="chatSidebar">
+                <div class="chat-sidebar-header">
+                    <h3>Conversations</h3>
+                    <button class="new-chat-btn" id="newChatBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M12 5v14M5 12h14"/>
+                        </svg>
+                        New Chat
+                    </button>
+                </div>
+                <div class="chat-sessions-list" id="chatSessionsList">
+                    <div class="chat-empty-state">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        <p>No conversations yet</p>
+                        <span>Start a new chat to begin</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Main Area -->
+            <div class="chat-main" id="chatMain">
+                <div class="chat-header">
+                    <button class="chat-back-btn" id="chatBackBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <div class="chat-title-section">
+                        <h3 id="chatTitle">AI Legal Assistant</h3>
+                        <div class="chat-status" id="chatStatus">
+                            <div class="status-dot"></div>
+                            <span>Online</span>
+                        </div>
+                    </div>
+                    <button class="chat-close-btn" id="chatCloseBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="chat-messages-container">
+                    <div class="chat-welcome" id="chatWelcome">
+                        <div class="welcome-icon">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                            </svg>
+                        </div>
+                        <h3>Welcome to AI Legal Assistant</h3>
+                        <p>Ask me anything about Indian law, court judgments, legal procedures, or get help understanding legal documents.</p>
+                        <div class="suggestion-chips">
+                            <button class="suggestion-chip" data-suggestion="What are the key provisions of Article 370?">
+                                Article 370 provisions
+                            </button>
+                            <button class="suggestion-chip" data-suggestion="Explain IPC Section 302">
+                                IPC Section 302
+                            </button>
+                            <button class="suggestion-chip" data-suggestion="How does bail work in Indian law?">
+                                Bail procedures
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chat-messages" id="chatMessages"></div>
+                    <div class="chat-loading" id="chatLoading" style="display: none;">
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                        <span>AI is thinking...</span>
+                    </div>
+                </div>
+
+                <div class="chat-input-area">
+                    <div class="chat-input-container">
+                        <button class="attach-case-btn" id="attachCaseBtn" title="Attach case">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                            </svg>
+                        </button>
+                        <textarea 
+                            class="chat-input" 
+                            id="chatInput" 
+                            placeholder="Ask about Indian law..."
+                            rows="1"
+                        ></textarea>
+                        <button class="send-message-btn" id="sendMessageBtn" disabled>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"/>
+                                <polygon points="22,2 15,22 11,13 2,9"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="chat-hint">
+                        Press Enter to send • Shift+Enter for new line
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Authentication Modals -->
     <!-- Login Modal -->
@@ -304,6 +418,7 @@
     <script src="auth.local.js"></script>
     <script src="auth.js"></script>
     <script src="script.js"></script>
+    <script src="chat.js"></script>
     <!-- theme.js removed: functionality has been merged into script.js to avoid 404/MIME errors -->
 </body>
 </html>
